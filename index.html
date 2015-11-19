@@ -1,0 +1,34 @@
+<script type="text/javascript" src="highcharts-custom.js"></script>
+<script type="text/javascript" src="main.js"></script>
+
+<div id="container" style="min-width: 310px; height: 400px; margin:0 auto"></div>
+
+<p id="error" style="color:red"></p>
+
+<p>Domain: <input type="text" placeholder="Domain" name="domain" id="domain"></p>
+<p>Metric:
+	<select id="metric">
+        <!-- These are all the metric names and metric codes  -->
+        <!-- <option value="metricCode">metricName</option> -->
+        <option value="rank">Rank</option>
+        <option value="uv">Unique Visitors</option>
+        <option value="vis">Visits</option>
+        <option value="pv">Page Views</option>
+        <option value="avgstay">Average Stay</option>
+        <option value="vpp">Visits per Person</option>
+        <option value="ppv">Pages Per Visit</option>
+        <option value="att">Attention</option>
+	</select>
+</p>
+
+<p>Optional Parameters</p>
+
+<p>Select data between a specified start date and end date</p>
+
+<p>Start Date: <input type="month" name="start_date" /> End Date: <input type="month" name="end_date" /> <button id="clearStartEnd">Clear start and end date</button></p>
+
+<p>OR</p>
+
+<p>Select data from the last <input type="number" name="latest" min="1" max="25" /> Months <button id="clearLatest">Clear</button></p>
+
+<button id="go">GO!</button>
