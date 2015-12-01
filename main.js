@@ -26,8 +26,68 @@
 // But it is preferable that you create your own key.
 
 // Feel free to e-mail lots of questions.
- 
 
+// API KEY: b365ad8f3305bcf1662d82000001c021
+
+var API_KEY = 'b365ad8f3305bcf1662d82000001c021';
+var BASE_URL = 'https://apps.compete.com/sites/'
+var JSONP_CALLBACK = 'processData'
+
+var requestObject = {};
+
+function getData() {    
+    var script = document.createElement('script');
+    script.type = 'text/javascript';
+    
+    // required params
+    var domainValue = document.getElementById('domain').value;
+    var metric = document.getElementById('metric');
+    var metricCode = metric.options[metric.selectedIndex].value;
+    var metricName = metric.options[metric.selectedIndex].text;
+    
+    requestObject.domain = domainValue;
+    requestObject.metricCode = metricCode;
+    requestObject.metricName = metricName;
+    
+    var src = BASE_URL + domainValue + '/trended/' 
+            + metricCode + '/?apikey=' + API_KEY;
+    
+    // optional params
+    var startDate = document.getElementsByName('start_date')[0].value;
+    var endDate = document.getElementsByName('end_date')[0].value;
+    var latest = document.getElementsByName('latest')[0].value;
+    
+    if(startDate.length != 0 && endDate.length != 0) {
+        startDate = startDate.replace(/-/,'');
+        endDate = endDate.replace(/-/,'');
+        src += '&start_date=' + startDate + '&end_date=' + endDate;
+    } else if(latest.length != 0) {
+        src += '&latest=' + latest;
+    }
+    
+    src += '&jsonp=' + JSONP_CALLBACK;
+
+    console.log(src);
+    script.src = src;
+    
+    // only need the browser to process the script
+    // so we can just add it and delete it
+    document.head.appendChild(script);
+    document.head.removeChild(script);
+    
+}
+
+function processData(data) {
+    console.log(data);
+    if(data.status === 'OK') {
+        makeChart(data,requestObject.metricName,requestObject.metricCode,
+              requestObject.domain);
+    } else {
+        alert(data.status + '\n' + data.status_message);
+    }
+    
+}
+ 
 function makeChart (data, metricName, metricCode, domain) {
     // Params:
     // `data` - the raw data Compete gives you after the JSONP request
