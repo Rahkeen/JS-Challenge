@@ -36,6 +36,11 @@ var requestObject = {};
 function getData() {    
     var script = document.createElement('script');
     script.type = 'text/javascript';
+    
+    /* If there is an HTTP error (ex: 403) the jsonp callback is never actually
+        called, so this is a way to check if the script is loaded, and if not, then
+        the culprit is probably an HTTP error code.
+    */
     script.onerror = function() {
         alert("Some parameters might be invalid, most likely dates/latest months");
     }
