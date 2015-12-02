@@ -36,6 +36,9 @@ var requestObject = {};
 function getData() {    
     var script = document.createElement('script');
     script.type = 'text/javascript';
+    script.onerror = function() {
+        alert("Some parameters might be invalid, most likely dates/latest months");
+    }
     
     // required params
     var domainValue = document.getElementById('domain').value;
