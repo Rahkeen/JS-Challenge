@@ -27,8 +27,6 @@
 
 // Feel free to e-mail lots of questions.
 
-// API KEY: b365ad8f3305bcf1662d82000001c021
-
 var API_KEY = 'b365ad8f3305bcf1662d82000001c021';
 var BASE_URL = 'https://apps.compete.com/sites/'
 var JSONP_CALLBACK = 'processData'
@@ -41,6 +39,25 @@ function getData() {
     
     // required params
     var domainValue = document.getElementById('domain').value;
+    
+    // validate domain input by removing excess then testing format
+    if(domainValue.length === 0) {
+        alert('Domain is required!')
+        return;
+    } else {
+        //
+        domainValue = domainValue.replace(/^(http|https)\:\/\//, '');
+        domainValue = domainValue.replace(/^(www.)/, '');
+        
+        var regex = /[a-z]+\.[a-z]{2,}/;
+        if(!regex.test(domainValue)) {
+            alert(' Domain format needs to be: "domain.com"');
+            return;
+        }
+        console.log(domainValue);
+    }
+    
+    
     var metric = document.getElementById('metric');
     var metricCode = metric.options[metric.selectedIndex].value;
     var metricName = metric.options[metric.selectedIndex].text;
@@ -60,6 +77,12 @@ function getData() {
     if(startDate.length != 0 && endDate.length != 0) {
         startDate = startDate.replace(/-/,'');
         endDate = endDate.replace(/-/,'');
+        
+        if(parseInt(startDate) > parseInt(endDate)) {
+            alert('End date must occur after start date.')
+            return;
+        }
+        
         src += '&start_date=' + startDate + '&end_date=' + endDate;
     } else if(latest.length != 0) {
         src += '&latest=' + latest;
@@ -78,6 +101,7 @@ function getData() {
 }
 
 function processData(data) {
+    console.log('in callback');
     console.log(data);
     if(data.status === 'OK') {
         makeChart(data,requestObject.metricName,requestObject.metricCode,
